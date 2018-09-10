@@ -7,7 +7,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class Tests
 {
-	@Test(timeout = 1000L)
+	@Test(timeout = 3000L)
 	public void openings() throws ChessException
 	{
 		System.out.println("Openings\n");

@@ -1,9 +1,14 @@
 import org.junit.Test;
 import sh.hell.compactchess.exceptions.ChessException;
 import sh.hell.compactchess.game.Game;
+import sh.hell.compactchess.game.Move;
 import sh.hell.compactchess.game.Opening;
 
+import java.util.ArrayList;
+
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 
 public class Tests
 {
@@ -11,10 +16,21 @@ public class Tests
 	public void openings() throws ChessException
 	{
 		System.out.println("Openings\n");
-		final Game game = Game.fromPGN("1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Be7 6.Re1 b5 7.Bb3 O-O 8.c3 d5 9.exd5 Nxd5 10.Nxe5 Nxe5 11.Rxe5 c6 12.d4 Bd6 13.Re1 Qh4 14.g3 Qh3 15.Be3 Bg4 16.Qd3 Rae8 17.Nd2 Re6 18.a4 Qh5 19. axb5").get(0);
+		final Game game = Game.fromPGN("1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Be7 6.Re1 b5 7.Bb3 O-O 8.c3 d5 9.exd5 Nxd5 10.Nxe5 Nxe5 11.Rxe5 c6 12.d4 Bd6 13.Re1 Qh4 14.g3 Qh3 15.Be3 Bg4 16.Qd3 Rae8 17.Nd2 Re6 18.a4").get(0);
+		final ArrayList<Opening> continuations = Opening.getContinuations(game);
+		assertEquals(1, continuations.size());
+		final Opening opening = continuations.get(0);
+		assertFalse(opening.isUsedIn(game));
+		assertTrue(opening.canBeUsedIn(game));
+		final Move nextMove = opening.getNextMove(game);
+		assertEquals("h3h5", nextMove.toUCI());
+		nextMove.commit();
+		assertTrue(opening.isUsedIn(game));
+		game.uciMove("a4b5").commit();
+		assertTrue(opening.isUsedIn(game));
 		Opening.insertInto(game, false, true);
 		System.out.println(game.toPGN());
-		assertEquals("Ruy Lopez: Marshall, Main Line, Spassky Variation", game.tags.get("Opening"));
+		assertEquals("Ruy Lopez: Marshall, Main Line, Spassky Variation", game.tags.get("Opening")); // This is the longest opening with 36 plies.
 		assertEquals("C89", game.tags.get("ECO"));
 		int i = 0;
 		assertEquals("B00 King's Pawn", game.moves.get(i++).getAnnotation());

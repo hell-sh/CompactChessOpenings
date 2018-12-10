@@ -7,7 +7,7 @@ The ECO openings are being sourced from [niklasf/eco](https://github.com/niklasf
 - [More information](https://compactchess.cc/openings)
 - [Downloads](https://github.com/hell-sh/CompactChessOpenings/releases) (dependencies not included)
 
-## Maven2
+## Maven
 
     <repositories>
         <repository>
@@ -19,7 +19,6 @@ The ECO openings are being sourced from [niklasf/eco](https://github.com/niklasf
         <dependency>
             <groupId>sh.hell</groupId>
             <artifactId>compactchessopenings</artifactId>
-            <version>LATEST</version>
+            <version>[1.1,2.0)</version>
         </dependency>
     </dependencies>
-
